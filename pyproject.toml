@@ -1,6 +1,38 @@
 [build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
+build-backend = "flit_core.buildapi"
+requires = ["flit_core >=3.7.1,<4"]
+
+[project]
+name = "nettopp-auth-api"
+version = "0.1.0"
+description = "An authentication system based on JWT, FastAPI and CockroachDB"
+requires-python = ">=3.8"
+classifiers = [ "Private :: Do Not Upload" ]
+dependencies = [
+    "sqlalchemy         ~= 1.4.40",
+    "fastapi            ~= 0.77.0",
+    "uvicorn            ~= 0.17.0",
+]
+
+[project.optional-dependencies]
+lint = [
+    "autopep8        ~= 1.6.0",
+    "bandit[toml]    ~= 1.7.4",
+    "flake8          ~= 4.0.0",
+    "isort           ~= 5.10.0",
+    "mypy            >= 0.950",
+]
+test = [
+    "pytest          ~= 7.1.0",
+    "pytest-cov      ~= 3.0.0",
+    "pytest-xdist    ~= 2.5.0",
+]
+dev = [
+    "nox             ~= 2022.1.7",
+    "pre-commit      ~= 2.20.0",
+    "nettopp-auth-api[test]",
+    "nettopp-auth-api[lint]",
+]
 
 [tool.pytest.ini_options]
 minversion = "6.0"
@@ -8,3 +40,11 @@ addopts = "-rA -q"
 testpaths = [
     "tests"
 ]
+
+[tool.flit.module]
+name = "auth_api"
+
+[tool.bandit]
+exclude_dirs = ["tests"]
+tests = ["B201", "B301"]
+skips = ["B101", "B601"]
