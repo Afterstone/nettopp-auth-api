@@ -45,7 +45,7 @@ python -m venv venv
 source venv/bin/activate
 
 # Install the dependencies.
-python -m install -e .[dev]
+python -m pip install -e .[dev]
 
 # Set up pre-commit.
 pre-commit install
