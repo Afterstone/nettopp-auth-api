@@ -2,7 +2,7 @@ on:
   push:
     branches:
       - develop
-      - rikard_20221215_github_workflows
+      - feature/rikard_20221215_github_workflows
 
 name: Run tests
 
