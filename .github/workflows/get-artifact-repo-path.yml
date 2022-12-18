@@ -28,11 +28,11 @@ jobs:
   get-path:
     runs-on: ubuntu-latest
     steps:
-      - name: Set up GAR base URL
-        run: echo "ARTIFACT_BASE_URL=${{env.REGION}}-docker.pkg.dev" >> $GITHUB_ENV
+    - name: Set up GAR base URL
+      run: echo "ARTIFACT_BASE_URL=${{env.REGION}}-docker.pkg.dev" >> $GITHUB_ENV
 
-      - name: Set the GAR repo URL
-        run: echo "ARTIFACT_REPO=${{env.ARTIFACT_BASE_URL}}/${{env.GCP_PROJECT_ID}}/${{env.GAR_REPO_NAME}}/${{env.CLOUD_RUN_SERVICE}}:${{ github.sha }}" >> $GITHUB_ENV
+    - name: Set the GAR repo URL
+      run: echo "ARTIFACT_REPO=${{env.ARTIFACT_BASE_URL}}/${{env.GCP_PROJECT_ID}}/${{env.GAR_REPO_NAME}}/${{env.CLOUD_RUN_SERVICE}}:${{ github.sha }}" >> $GITHUB_ENV
 
-      - name: Set the GAR repo path
-        run: echo "artifact_path=${{env.ARTIFACT_REPO}}" >> $GITHUB_ENV
+    - name: Set the GAR repo path
+      run: echo "artifact_path=${{env.ARTIFACT_REPO}}" >> $GITHUB_ENV
