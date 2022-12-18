@@ -22,7 +22,7 @@ on:
     outputs:
       artifact-path:
         description: 'Path to Google Artifact Registry'
-        value: ${{ jobs.getpath.outputs.artifact_path }}
+        value: ${{ jobs.get_path.outputs.artifact_path }}
 
 jobs:
   get_path:
