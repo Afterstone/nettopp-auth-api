@@ -22,17 +22,24 @@ on:
     outputs:
       artifact-path:
         description: 'Path to Google Artifact Registry'
-        value: ${{ jobs.get-path.outputs.artifact_path }}
+        value: ${{ jobs.getpath.outputs.artifact_path }}
 
 jobs:
-  get-path:
+  get_path:
     runs-on: ubuntu-latest
+
+    outputs:
+      artifact_path: ${{ steps.set_path.outputs.artifact_path }}
+
     steps:
     - name: Set up GAR base URL
+      id: set_base_url
       run: echo "ARTIFACT_BASE_URL=${{inputs.gcp-region}}-docker.pkg.dev" >> $GITHUB_ENV
 
     - name: Set the GAR repo URL
+      id: set_repo_url
       run: echo "ARTIFACT_REPO=${{env.ARTIFACT_BASE_URL}}/${{inputs.gcp-project-id}}/${{inputs.gar-repo-name}}/${{inputs.gcp-cloud-run-service}}:${{ github.sha }}" >> $GITHUB_ENV
 
     - name: Set the GAR repo path
+      id: set_path
       run: echo "artifact_path=${{env.ARTIFACT_REPO}}" >> $GITHUB_OUTPUT
