@@ -28,7 +28,6 @@ jobs:
   get-path:
     runs-on: ubuntu-latest
     steps:
-      steps:
       - name: Set up GAR base URL
         run: echo "ARTIFACT_BASE_URL=${{env.REGION}}-docker.pkg.dev" >> $GITHUB_ENV
 
