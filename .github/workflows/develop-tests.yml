@@ -3,8 +3,9 @@ name: Run tests
 on:
   push:
     branches:
+      - main
       - develop
-      - feature/rikard_20221215_github_workflows
+      - feature/**
 
 jobs:
   tests:
