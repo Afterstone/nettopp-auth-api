@@ -1,0 +1,19 @@
+name: Call a reusable workflow and use its outputs
+
+on:
+  workflow_dispatch:
+
+jobs:
+  job1:
+    uses: ./.github/workflows/get-artifact-repo-path.yml
+    with:
+      gcp-region: 'europe-west1'
+      gcp-project-id: 'nettopp-auth-api'
+      gar-repo-name: 'nettopp-auth-api'
+      gcp-cloud-run-service: 'nettopp-auth-api'
+
+  job2:
+    runs-on: ubuntu-latest
+    needs: job1
+    steps:
+      - run: echo ${{ needs.job1.outputs.artifact-path }}

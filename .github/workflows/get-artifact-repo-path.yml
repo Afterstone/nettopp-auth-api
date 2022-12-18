@@ -1,0 +1,39 @@
+name: Get Google Artifact Registry path
+
+on:
+  workflow_call:
+    inputs:
+      gcp-region:
+        description: 'GCP region'
+        required: true
+        type: string
+      gcp-project-id:
+        description: 'GCP project ID'
+        required: true
+        type: string
+      gar-repo-name:
+        description: 'GAR repo name'
+        required: true
+        type: string
+      gcp-cloud-run-service:
+        description: 'GCP Cloud Run service'
+        required: true
+        type: string
+    outputs:
+      artifact-path:
+        description: 'Path to Google Artifact Registry'
+        value: ${{ jobs.get-path.outputs.artifact_path }}
+
+jobs:
+  get-path:
+    runs-on: ubuntu-latest
+    steps:
+      steps:
+      - name: Set up GAR base URL
+        run: echo "ARTIFACT_BASE_URL=${{env.REGION}}-docker.pkg.dev" >> $GITHUB_ENV
+
+      - name: Set the GAR repo URL
+        run: echo "ARTIFACT_REPO=${{env.ARTIFACT_BASE_URL}}/${{env.GCP_PROJECT_ID}}/${{env.GAR_REPO_NAME}}/${{env.CLOUD_RUN_SERVICE}}:${{ github.sha }}" >> $GITHUB_ENV
+
+      - name: Set the GAR repo path
+        run: echo "artifact_path=${{env.ARTIFACT_REPO}}" >> $GITHUB_ENV
