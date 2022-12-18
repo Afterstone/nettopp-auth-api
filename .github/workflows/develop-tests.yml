@@ -1,10 +1,10 @@
+name: Run tests
+
 on:
   push:
     branches:
       - develop
       - feature/rikard_20221215_github_workflows
-
-name: Run tests
 
 jobs:
   tests:
