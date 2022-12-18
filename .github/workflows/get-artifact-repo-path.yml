@@ -35,4 +35,4 @@ jobs:
       run: echo "ARTIFACT_REPO=${{env.ARTIFACT_BASE_URL}}/${{inputs.gcp-project-id}}/${{inputs.gar-repo-name}}/${{inputs.gcp-cloud-run-service}}:${{ github.sha }}" >> $GITHUB_ENV
 
     - name: Set the GAR repo path
-      run: echo "artifact_path=${{env.ARTIFACT_REPO}}" >> GITHUB_OUTPUT
+      run: echo "artifact_path=${{env.ARTIFACT_REPO}}" >> $GITHUB_OUTPUT
