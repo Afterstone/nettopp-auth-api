@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3.2.0
+      - name: List folder contents.
+        run: ls -la ./.github/workflows/
       - name: Run tests
         uses: ./.github/workflows/callable-tests.yml
 
