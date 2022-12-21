@@ -16,8 +16,8 @@ RUN pip install .
 COPY . .
 RUN pip install .
 
+ENV PORT=8000
 CMD [ \
-    "uvicorn", \
-    "auth_api.main:app", \
-    "--host", "0.0.0.0" \
+    "bash", "-c", \
+    "python -m auth_api.main" \
 ]
