@@ -1,5 +1,8 @@
-from auth_api.main import main
+import pytest
+
+from auth_api.main import root
 
 
-def test_main():
-    assert main() == "Hello"
+@pytest.mark.asyncio
+async def test_root():
+    assert (await root()) == {"message": "Hello Worlds"}
