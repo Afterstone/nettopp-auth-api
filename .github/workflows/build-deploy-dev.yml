@@ -1,10 +1,10 @@
 name: Deploy to Cloud Run
 
 on:
-  push:
-    branches:
-      - develop
-      - feature/**
+  # push:
+  #   branches:
+  #     - develop
+  #     - feature/**
   workflow_run:
     branches:
       - develop
