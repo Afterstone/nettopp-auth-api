@@ -5,15 +5,15 @@ on:
     branches:
       - develop
       - feature/**
-  # NB: Only works if this is pushed to main.
+
   # workflow_run:
+  #   branches:
+  #     - develop
+  #     - feature/**
   #   workflows:
   #     - Tests
   #   types:
   #     - completed
-  #   branches:
-  #     - develop
-  #     - feature/**
 
 env:
   CLOUD_RUN_SERVICE: nettopp-auth-api-develop
@@ -58,7 +58,7 @@ jobs:
       uses: google-github-actions/setup-gcloud@v1.0.1
 
     - name: Authorize docker push
-      run: gcloud auth configure-docker ${{ env.GCP_REGION }}-docker.pkg.dev
+      run: gcloud auth configure-docker ${{ env.GCP_REGION }}-docker.pkg.dev --quiet
 
     - name: Build container
       run: |
@@ -74,5 +74,5 @@ jobs:
         gcloud run deploy ${{ env.CLOUD_RUN_SERVICE }} \
           --region ${{ env.GCP_REGION }} \
           --image ${{ env.ARTIFACT_REPO }} \
-          --platform "managed" \
-          --quiet
+          --platform "managed"
+# --quiet
