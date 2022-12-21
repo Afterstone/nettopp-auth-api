@@ -3,7 +3,7 @@ name: Call a reusable workflow and use its outputs
 on:
   push:
     branches:
-      - feature/**
+      - DISABLED
 
 jobs:
   job1:
