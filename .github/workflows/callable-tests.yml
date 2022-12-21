@@ -1,11 +1,8 @@
 name: Run tests
 
 on:
-  push:
-    branches:
-      - main
-      - develop
-      - feature/**
+  workflow_call:
+
 
 jobs:
   tests:
