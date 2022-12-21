@@ -1,10 +1,13 @@
+name: Deploy to Cloud Run
+
 on:
-  push:
+  workflow_run:
+    workflows: [Tests]
+    types: [completed]
     branches:
       - develop
-      - 'feature/**'
+      - feature/**
 
-name: Build and deploy to Cloud Run
 env:
   CLOUD_RUN_SERVICE: nettopp-auth-api-develop
   GAR_REPO_NAME: nettopp-auth

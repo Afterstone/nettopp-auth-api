@@ -1,6 +1,10 @@
-name: Run tests
+name: Tests
 
-on: [workflow_dispatch]
+on:
+  push:
+    branches:
+      - develop
+      - feature/**
 
 jobs:
   tests:
