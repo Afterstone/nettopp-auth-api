@@ -64,7 +64,7 @@ jobs:
       run: |
         docker build \
           -t ${{ env.ARTIFACT_REPO }} \
-          -f dockerfiles/Dockerfile.run .
+          -f Dockerfile .
 
     - name: Push container
       run: docker push ${{ env.ARTIFACT_REPO }}
