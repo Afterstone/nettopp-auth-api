@@ -56,16 +56,16 @@ jobs:
     - name: Build container
       run: |
         docker build \
-          -t ${{ outputs.ARTIFACT_REPO }} \
+          -t ${{ env.ARTIFACT_REPO }} \
           -f dockerfiles/Dockerfile.run .
 
     - name: Push container
-      run: docker push ${{ outputs.ARTIFACT_REPO }}
+      run: docker push ${{ env.ARTIFACT_REPO }}
 
     - name: Deploy to Cloud Run
       run: |
         gcloud run deploy ${{ env.CLOUD_RUN_SERVICE }} \
           --region ${{ env.REGION }} \
-          --image ${{ outputs.ARTIFACT_REPO }} \
+          --image ${{ env.ARTIFACT_REPO }} \
           --platform "managed" \
           --quiet
