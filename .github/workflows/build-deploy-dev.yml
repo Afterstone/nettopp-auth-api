@@ -9,8 +9,7 @@ env:
   CLOUD_RUN_SERVICE: nettopp-auth-api-develop
   GAR_REPO_NAME: nettopp-auth
   GCP_PROJECT_ID: nettopp
-  REGION: europe-west1
-  PYTHON_VERSION: 3.10
+  GCP_REGION: europe-west1
 
 jobs:
   build_and_deploy:
@@ -23,12 +22,10 @@ jobs:
 
     steps:
     - name: Set up GAR base URL
-      id: set_base_url
-      run: echo "ARTIFACT_BASE_URL=${{inputs.gcp-region}}-docker.pkg.dev" >> $GITHUB_ENV
+      run: echo "ARTIFACT_BASE_URL=${{env.REGION}}-docker.pkg.dev" >> $GITHUB_ENV
 
     - name: Set the GAR repo URL
-      id: set_repo_url
-      run: echo "ARTIFACT_REPO=${{env.ARTIFACT_BASE_URL}}/${{inputs.gcp-project-id}}/${{inputs.gar-repo-name}}/${{inputs.gcp-cloud-run-service}}:${{ github.sha }}" >> $GITHUB_ENV
+      run: echo "ARTIFACT_REPO=${{env.ARTIFACT_BASE_URL}}/${{env.GCP_PROJECT_ID}}/${{env.GAR_REPO_NAME}}/${{env.CLOUD_RUN_SERVICE}}:${{ github.sha }}" >> $GITHUB_ENV
 
     - name: Checkout
       uses: actions/checkout@v3.2.0
