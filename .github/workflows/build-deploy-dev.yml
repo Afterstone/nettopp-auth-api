@@ -1,0 +1,71 @@
+on:
+  push:
+    branches:
+      - develop
+      - 'feature/**'
+
+name: Build and deploy to Cloud Run
+env:
+  CLOUD_RUN_SERVICE: nettopp-auth-api-develop
+  GAR_REPO_NAME: nettopp-auth
+  GCP_PROJECT_ID: nettopp
+  REGION: europe-west1
+  PYTHON_VERSION: 3.10
+
+jobs:
+  build_and_deploy:
+    name: Build and deploy
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+    - name: Set up GAR base URL
+      id: set_base_url
+      run: echo "ARTIFACT_BASE_URL=${{inputs.gcp-region}}-docker.pkg.dev" >> $GITHUB_ENV
+
+    - name: Set the GAR repo URL
+      id: set_repo_url
+      run: echo "ARTIFACT_REPO=${{env.ARTIFACT_BASE_URL}}/${{inputs.gcp-project-id}}/${{inputs.gar-repo-name}}/${{inputs.gcp-cloud-run-service}}:${{ github.sha }}" >> $GITHUB_ENV
+
+    - name: Checkout
+      uses: actions/checkout@v3.2.0
+
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v1.0.0'
+      with:
+        credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+        token_format: 'access_token'
+
+    - name: Docker Auth
+      id: docker-auth
+      uses: 'docker/login-action@v2.1.0'
+      with:
+        username: 'oauth2accesstoken'
+        password: '${{ steps.auth.outputs.access_token }}'
+        registry: '${{ env.REGION }}-docker.pkg.dev'
+
+    - name: Set up Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1.0.1
+
+    - name: Authorize docker push
+      run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
+
+    - name: Build container
+      run: |
+        docker build \
+          -t ${{ outputs.ARTIFACT_REPO }} \
+          -f dockerfiles/Dockerfile.run .
+
+    - name: Push container
+      run: docker push ${{ outputs.ARTIFACT_REPO }}
+
+    - name: Deploy to Cloud Run
+      run: |
+        gcloud run deploy ${{ env.CLOUD_RUN_SERVICE }} \
+          --region ${{ env.REGION }} \
+          --image ${{ outputs.ARTIFACT_REPO }} \
+          --platform "managed" \
+          --quiet
