@@ -3,7 +3,6 @@ name: Run tests
 on:
   workflow_call:
 
-
 jobs:
   tests:
     runs-on: ubuntu-latest
