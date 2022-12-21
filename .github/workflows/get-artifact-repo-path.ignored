@@ -20,16 +20,16 @@ on:
         required: true
         type: string
     outputs:
-      artifact-path:
+      ARTIFACT_REPO:
         description: 'Path to Google Artifact Registry'
-        value: ${{ jobs.get_path.outputs.artifact_path }}
+        value: ${{ jobs.get_path.outputs.ARTIFACT_REPO }}
 
 jobs:
   get_path:
     runs-on: ubuntu-latest
 
     outputs:
-      artifact_path: ${{ steps.set_path.outputs.artifact_path }}
+      artifact_path: ${{ steps.set_path.outputs.ARTIFACT_REPO }}
 
     steps:
     - name: Set up GAR base URL
@@ -42,4 +42,27 @@ jobs:
 
     - name: Set the GAR repo path
       id: set_path
-      run: echo "artifact_path=${{env.ARTIFACT_REPO}}" >> $GITHUB_OUTPUT
+      run: echo "ARTIFACT_REPO=${{env.ARTIFACT_REPO}}" >> $GITHUB_OUTPUT
+
+# Usage:
+# name: Call a reusable workflow and use its outputs
+
+# on:
+#   push:
+#     branches:
+#       - DISABLED
+
+# jobs:
+#   job1:
+#     uses: ./.github/workflows/get-artifact-repo-path.yml
+#     with:
+#       gcp-region: 'europe-west1'
+#       gcp-project-id: 'nettopp-auth-api'
+#       gar-repo-name: 'nettopp-auth-api'
+#       gcp-cloud-run-service: 'nettopp-auth-api'
+
+#   job2:
+#     runs-on: ubuntu-latest
+#     needs: job1
+#     steps:
+#     - run: echo ${{ needs.job1.outputs.artifact-path }}
