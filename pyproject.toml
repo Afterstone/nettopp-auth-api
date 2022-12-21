@@ -26,6 +26,7 @@ test = [
     "pytest          ~= 7.1.0",
     "pytest-cov      ~= 3.0.0",
     "pytest-xdist    ~= 2.5.0",
+    "pytest-asyncio  ~= 0.20.3",
 ]
 dev = [
     "nox             ~= 2022.1.7",
