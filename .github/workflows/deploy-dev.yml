@@ -1,0 +1,24 @@
+name: Deploy to development
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_run:
+    branches:
+      - develop
+    workflows:
+      - Tests
+    types:
+      - completed
+
+jobs:
+  build_and_deploy:
+    uses: ./.github/workflows/build-deploy.yml
+    with:
+      environment: dev
+      cloud_run_service: nettopp-auth-api-develop
+      gar_repo_name: nettopp-auth
+      gcp_project_id: nettopp
+      gcp_region: europe-west1
+    secrets: inherit
