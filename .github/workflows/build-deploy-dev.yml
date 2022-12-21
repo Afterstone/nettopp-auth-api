@@ -1,12 +1,18 @@
 name: Deploy to Cloud Run
 
 on:
-  workflow_run:
-    workflows: [Tests]
-    types: [completed]
+  push:
     branches:
       - develop
       - feature/**
+  # workflow_run:
+  #   workflows:
+  #     - Tests
+  #   types:
+  #     - completed
+  #   branches:
+  #     - develop
+  #     - feature/**
 
 env:
   CLOUD_RUN_SERVICE: nettopp-auth-api-develop
