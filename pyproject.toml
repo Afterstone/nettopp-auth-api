@@ -18,7 +18,7 @@ dependencies = [
 lint = [
     "autopep8        ~= 1.6.0",
     "bandit[toml]    ~= 1.7.4",
-    "flake8          ~= 4.0.0",
+    "flake8          ~= 6.0.0",
     "isort           ~= 5.10.0",
     "mypy            >= 0.950",
 ]
