@@ -11,7 +11,7 @@ classifiers = [ "Private :: Do Not Upload" ]
 dependencies = [
     "sqlalchemy         ~= 1.4.40",
     "fastapi            ~= 0.77.0",
-    "uvicorn            ~= 0.17.0",
+    "uvicorn            ~= 0.20.0",
 ]
 
 [project.optional-dependencies]
