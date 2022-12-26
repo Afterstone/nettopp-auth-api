@@ -5,10 +5,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-def _get_envvar(name: str) -> str:
-    var = os.getenv(name, None)
+def _get_envvar(name: str, default: str | None = None) -> str:
+    var = os.getenv(name, None) or default
     if var is None:
         raise ValueError(f"Environment variable {name} not set.")
+
     return var
 
 
@@ -40,5 +41,5 @@ JWT_SECRET_KEY: str = _get_envvar("JWT_SECRET_KEY")
 JWT_ALGORITHM: str = "HS256"
 
 # Server
-HOST: str = _get_envvar("HOST")
-PORT: int = int(_get_envvar("PORT"))
+HOST: str = _get_envvar("HOST", "0.0.0.0")  # nosec B104
+PORT: int = int(_get_envvar("PORT", "8000"))
