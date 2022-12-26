@@ -2,13 +2,15 @@ import datetime as dt
 
 import starlette.status as status
 from fastapi import APIRouter, Depends, Form, HTTPException, Response
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordBearer
 from jose.exceptions import ExpiredSignatureError
+from pydantic import EmailStr
+from pydantic.error_wrappers import ValidationError
 
 from auth_api.database import Session, get_db
 from auth_api.database.logic import (UserAlreadyExistsError,
                                      UserDoesNotExistError, create_user,
-                                     get_user_by_username)
+                                     get_user_by_email)
 from auth_api.models import User
 from auth_api.models.token import (ACCESS_TOKEN_TYPE, REFRESH_TOKEN_TYPE,
                                    AccessToken, RefreshToken, TokenPair)
@@ -17,24 +19,7 @@ from auth_api.security import (create_jwt_token, hash_password,
 
 router = APIRouter()
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/token")
-
-
-# async def get_current_user(
-#     token: str = Depends(oauth2_scheme)
-# ) -> User:
-#     try:
-#         token_data = await verify_decode_access_token(token)
-#     except ExpiredSignatureError:
-#         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token expired")
-#     username = token_data.get('username', None)
-#     if not username:
-#         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Username missing")
-#     try:
-#         user = await get_user_by_username(db, username)
-#     except UserDoesNotExistError:
-#         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
-#     return user
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/login")
 
 
 @router.get('/health')
@@ -46,18 +31,20 @@ async def health() -> Response:
 async def register(
     db: Session = Depends(get_db),
     email: str | None = Form(None),
-    form_data: OAuth2PasswordRequestForm = Depends()
+    username: str | None = Form(None),
+    password: str | None = Form(None),
 ) -> Response:
-    username = form_data.username
-    password = form_data.password
     if not (username and password and email):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Missing username, password or email.")
 
-    user = User(
-        username=username,
-        email=email,
-        password_hash=hash_password(password),
-    )
+    try:
+        user = User(
+            username=username,
+            email=EmailStr(email),
+            password_hash=hash_password(password),
+        )
+    except ValidationError:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid value provided.")
 
     try:
         await create_user(db, user)
@@ -71,15 +58,13 @@ async def register(
 async def login(
     db: Session = Depends(get_db),
     email: str | None = Form(None),
-    form_data: OAuth2PasswordRequestForm = Depends()
+    password: str | None = Form(None),
 ) -> TokenPair:
-    password = form_data.password
-
     if not (email and password):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Missing email or password.")
 
     try:
-        user = await get_user_by_username(db, email)
+        user = await get_user_by_email(db, email)
     except UserDoesNotExistError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
 
@@ -137,8 +122,12 @@ async def refresh(
     if token_data.get('token_type', None) != REFRESH_TOKEN_TYPE:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token type")
 
+    email = token_data.get('email', None)
+    if email is None:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email missing")
+
     try:
-        user = await get_user_by_username(db, token_data.get('username', None))
+        user = await get_user_by_email(db, email)
     except UserDoesNotExistError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
 

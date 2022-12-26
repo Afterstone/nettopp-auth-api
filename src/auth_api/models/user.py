@@ -1,13 +1,20 @@
 import datetime as dt
 
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr, validator
 
 
 class BaseUser(BaseModel):
     username: str
-    email: str
+    email: EmailStr
     is_active: bool = True
     is_superuser: bool = False
+
+    # Validate username.
+    @validator('username')
+    def validate_username(cls, v):
+        if len(v) < 3:
+            raise ValueError('Username must be at least 3 characters long')
+        return v
 
 
 class User(BaseUser):

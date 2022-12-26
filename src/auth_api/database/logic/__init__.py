@@ -2,6 +2,9 @@
 
 import datetime as dt
 
+from psycopg2.errors import UniqueViolation
+from pydantic import EmailStr
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.session import Session
 
 from auth_api.database.models import AuthUser
@@ -28,7 +31,7 @@ async def _get_user_by_predicate(db: Session, predicate) -> User:
     return User(
         id=auth_user.id,
         username=auth_user.username,
-        email=auth_user.email,
+        email=EmailStr(auth_user.email),
         password_hash=auth_user.password_hash,
         is_superuser=auth_user.is_superuser,
         is_active=auth_user.is_active,
@@ -53,7 +56,7 @@ async def create_user(db: Session, user: User) -> None:
     try:
         db_user = AuthUser(
             username=user.username,
-            email=user.email,
+            email=str(user.email),
             password_hash=user.password_hash,
             is_superuser=user.is_superuser,
             is_active=user.is_active,
@@ -61,6 +64,12 @@ async def create_user(db: Session, user: User) -> None:
         )
         db.add(db_user)
         db.commit()
-    except Exception:
-        # TODO: Handle and throw UserAlreadyExistsError
+    except IntegrityError as ie:
         db.rollback()
+        if isinstance(ie.orig, UniqueViolation):
+            raise UserAlreadyExistsError()
+        else:
+            raise ie
+    except Exception as e:
+        db.rollback()
+        raise e
