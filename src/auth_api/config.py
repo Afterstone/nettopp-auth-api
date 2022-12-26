@@ -32,9 +32,13 @@ def _parse_bool(
 # Application config
 VERBOSE: bool = _parse_bool(_get_envvar("VERBOSE"))
 
-# Database stuff
+# Database
 AUTH_DB_CONNECTION_STRING: str = _get_envvar("AUTH_DB_CONNECTION_STRING")
 
 # JWT
 JWT_SECRET_KEY: str = _get_envvar("JWT_SECRET_KEY")
 JWT_ALGORITHM: str = "HS256"
+
+# Server
+HOST: str = _get_envvar("HOST")
+PORT: int = int(_get_envvar("PORT"))
