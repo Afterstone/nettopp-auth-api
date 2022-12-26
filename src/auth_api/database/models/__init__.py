@@ -2,7 +2,7 @@ import datetime as dt
 
 from sqlalchemy import Boolean, Column, DateTime, Integer, String
 
-from .. import Base
+from ._base import Base
 
 
 class AuthUser(Base):
@@ -21,3 +21,9 @@ class AuthUser(Base):
 
     def __repr__(self):
         return f"<User('{self.username}', '{self.email}')>"
+
+
+__all__ = [
+    'AuthUser',
+    'Base'
+]
