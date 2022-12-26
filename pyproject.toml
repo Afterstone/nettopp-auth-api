@@ -11,8 +11,10 @@ classifiers = [ "Private :: Do Not Upload" ]
 dependencies = [
     "alembic[tz]                ~= 1.9.1",
     "fastapi                    ~= 0.77.0",
+    "passlib[bcrypt]            ~= 1.7.4",
     "psycopg2-binary            ~= 2.9.5",
     "python-dotenv              ~= 0.21.0",
+    "python-jose[cryptography]  ~= 3.3.0",
     "sqlalchemy-cockroachdb     ~= 1.4.4",
     "uvicorn                    ~= 0.17.0",
 ]
