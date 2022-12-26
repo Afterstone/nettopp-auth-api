@@ -18,6 +18,10 @@ dependencies = [
     "python-multipart           ~= 0.0.5",
     "sqlalchemy-cockroachdb     ~= 1.4.4",
     "uvicorn                    ~= 0.17.0",
+
+    # Requirements where the version depends on
+    # other packages.
+    "pydantic[email]",
 ]
 
 [project.optional-dependencies]
