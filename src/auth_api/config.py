@@ -5,6 +5,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+def _get_envvar(name: str) -> str:
+    var = os.getenv(name, None)
+    if var is None:
+        raise ValueError(f"Environment variable {name} not set.")
+    return var
+
+
 def _parse_bool(
     value: str | None,
     true_strs: frozenset[str] = frozenset(["yes", "true", "t", "y", "1"]),
@@ -22,17 +29,12 @@ def _parse_bool(
         raise ValueError("Invalid value for boolean conversion.")
 
 
-def _verify_auth_db_connection_string(
-    string: str | None,
-    required_keys: frozenset[str] = frozenset([
-        "{AUTH_DB_USER}", "{AUTH_DB_PASSWORD}", "{AUTH_DB_DOMAIN}", "{DB_PORT}"]
-    ),
-) -> str:
-    if string is None:
-        raise ValueError("AUTH_DB_CONNECTION_STRING not set")
+# Application config
+VERBOSE: bool = _parse_bool(_get_envvar("VERBOSE"))
 
-    return string
+# Database stuff
+AUTH_DB_CONNECTION_STRING: str = _get_envvar("AUTH_DB_CONNECTION_STRING")
 
-
-AUTH_DB_CONNECTION_STRING: str = _verify_auth_db_connection_string(os.getenv("AUTH_DB_CONNECTION_STRING", None))
-VERBOSE: bool = _parse_bool(os.getenv("VERBOSE"))
+# JWT
+JWT_SECRET_KEY: str = _get_envvar("JWT_SECRET_KEY")
+JWT_ALGORITHM: str = "HS256"
