@@ -28,6 +28,8 @@ lint = [
     "flake8-isort    ~= 6.0.0",
     "isort           ~= 5.10.0",
     "mypy            >= 0.950",
+    "types-passlib     ~= 1.7.7.3",
+    "types-python-jose ~= 3.3.4",
 ]
 test = [
     "pytest          ~= 7.2.0",
