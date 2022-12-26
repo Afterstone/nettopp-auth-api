@@ -1,17 +1,19 @@
 from pydantic import BaseModel
 
+ACCESS_TOKEN_TYPE = "access"  # nosec B105
+REFRESH_TOKEN_TYPE = "refresh"  # nosec B105
+
 
 class BaseToken(BaseModel):
     token: str
-    token_type: str
 
 
 class AccessToken(BaseToken):
-    token_type: str = "access"
+    pass
 
 
 class RefreshToken(BaseToken):
-    token_type: str = "refresh"
+    pass
 
 
 class TokenPair(BaseModel):
