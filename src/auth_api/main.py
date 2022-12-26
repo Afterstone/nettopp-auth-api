@@ -2,14 +2,13 @@
 import uvicorn
 from fastapi import FastAPI
 
+from .api.v1 import router as v1_router
 from .config import HOST, PORT
 
 app = FastAPI()
 
+app.include_router(v1_router, prefix='/api/v1', tags=['api/v1'])
 
-@app.get("/")
-async def root() -> dict:
-    return {"message": "Hello Worlds"}
 
 if __name__ == '__main__':
     uvicorn.run(
