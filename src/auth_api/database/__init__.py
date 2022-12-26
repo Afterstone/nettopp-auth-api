@@ -1,6 +1,7 @@
-from ._setup import Session, get_db
+from ._setup import Base, Session, get_db
 
 __all__ = [
     "get_db",
-    "Session"
+    "Session",
+    "Base"
 ]

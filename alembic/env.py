@@ -1,8 +1,13 @@
 from logging.config import fileConfig
 
+from dotenv import load_dotenv
 from sqlalchemy import engine_from_config, pool
 
 from alembic import context
+from auth_api import database
+from auth_api.config import AUTH_DB_CONNECTION_STRING
+
+load_dotenv()
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -17,7 +22,7 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = None
+target_metadata = database.Base.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
@@ -57,14 +62,16 @@ def run_migrations_online() -> None:
 
     """
     connectable = engine_from_config(
-        config.get_section(config.config_ini_section),
+        config.get_section(config.config_ini_section),  # type: ignore
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
+        url=AUTH_DB_CONNECTION_STRING
     )
 
     with connectable.connect() as connection:
         context.configure(
-            connection=connection, target_metadata=target_metadata
+            connection=connection,
+            target_metadata=target_metadata
         )
 
         with context.begin_transaction():
