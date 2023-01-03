@@ -42,7 +42,7 @@ test = [
 ]
 dev = [
     "nox             ~= 2022.11.21",
-    "pre-commit      ~= 2.20.0",
+    "pre-commit      ~= 2.21.0",
     "nettopp-auth-api[test]",
     "nettopp-auth-api[lint]",
 ]
