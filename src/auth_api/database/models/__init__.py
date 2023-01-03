@@ -13,7 +13,7 @@ class AuthUser(Base):
     email = Column(String(255), nullable=False, unique=True, index=True)
     password_hash = Column(String(128), nullable=False)
 
-    is_active = Column(Boolean, default=True)
+    is_active = Column(Boolean, default=False)
     is_superuser = Column(Boolean, default=False)
 
     created_at = Column(DateTime, nullable=False, default=dt.datetime.utcnow)

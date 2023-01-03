@@ -6,7 +6,7 @@ from pydantic import BaseModel, EmailStr, validator
 class BaseUser(BaseModel):
     username: str
     email: EmailStr
-    is_active: bool = True
+    is_active: bool = False
     is_superuser: bool = False
 
     # Validate username.
