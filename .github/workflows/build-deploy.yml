@@ -69,6 +69,7 @@ jobs:
     - name: Build container
       run: |
         docker build \
+          --build-arg COCKROACHDB_CLUSTER_ID=${{ secrets.COCKROACHDB_CLUSTER_ID }} \
           -t ${{ env.ARTIFACT_REPO }} \
           -f Dockerfile .
 
