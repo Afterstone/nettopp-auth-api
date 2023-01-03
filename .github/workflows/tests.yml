@@ -3,12 +3,11 @@ name: Tests
 on:
   push:
     branches:
-      - main
-      - develop
       - feature/**
       - bugfix/**
       - release/**
       - hotfix/**
+  workflow_call:
 
 jobs:
   tests:
