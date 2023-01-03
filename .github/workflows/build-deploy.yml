@@ -5,7 +5,7 @@ on:
   workflow_call:
     inputs:
       environment:
-        description: 'The environment to deploy to'
+        description: 'The environment to deploy to, either dev or prod'
         required: true
         type: string
       cloud_run_service:
@@ -82,4 +82,11 @@ jobs:
           --region ${{ inputs.gcp_region }} \
           --image ${{ env.ARTIFACT_REPO }} \
           --platform "managed" \
-          --quiet
+          --allow-unauthenticated \
+          --quiet \
+    - name: Update dev traffic
+      run: |
+        gcloud run services update-traffic ${{ inputs.cloud_run_service }} \
+          --region ${{ inputs.gcp_region }} \
+          --to-revisions=LATEST=100
+      if: ${{ inputs.environment == 'dev' }}
