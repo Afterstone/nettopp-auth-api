@@ -9,15 +9,15 @@ from passlib.context import CryptContext
 
 from .config import JWT_ALGORITHM, JWT_SECRET_KEY
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+PWD_CONTEXT = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 def hash_password(password: str) -> str:
-    return str(pwd_context.hash(password))
+    return str(PWD_CONTEXT.hash(password))
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    result: bool = pwd_context.verify(plain_password, hashed_password)
+    result: bool = PWD_CONTEXT.verify(plain_password, hashed_password)
     return result
 
 
