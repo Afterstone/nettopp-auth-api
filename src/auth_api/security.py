@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import uuid
 from datetime import datetime, timedelta, timezone
 from typing import Any
 
@@ -29,6 +30,7 @@ def create_jwt_token(
     to_encode = data.copy()
     expire = datetime.now(timezone.utc) + expires_delta
     to_encode["exp"] = expire
+    to_encode["jti"] = str(uuid.uuid4())
     to_encode["token_type"] = token_type
     token: str = jwt.encode(to_encode, JWT_SECRET_KEY, algorithm=JWT_ALGORITHM)
     return token
