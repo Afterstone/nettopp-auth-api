@@ -55,6 +55,6 @@ def get_token_hash(token: str) -> str:
     return hashlib.sha256(token.encode('utf-8')).hexdigest()
 
 
-async def verify_decode_access_token(token: str) -> dict[str, Any]:
+def verify_decode_access_token(token: str) -> dict[str, Any]:
     data = decode_jwt_token(token)
     return data
