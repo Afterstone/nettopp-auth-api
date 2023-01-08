@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import datetime as dt
 
 import starlette.status as status
@@ -115,7 +117,7 @@ async def refresh(
     token: str = Depends(oauth2_scheme)
 ) -> AccessToken:
     try:
-        token_data = await verify_decode_access_token(token)
+        token_data = verify_decode_access_token(token)
     except ExpiredSignatureError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token expired")
 
@@ -130,6 +132,9 @@ async def refresh(
         user = await get_user_by_email(db, email)
     except UserDoesNotExistError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
+
+    if not user.is_active:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User is not active")
 
     access_token = AccessToken(
         token=create_jwt_token(
