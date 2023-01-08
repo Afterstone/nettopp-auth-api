@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import pytest
 
 import auth_api.config as config

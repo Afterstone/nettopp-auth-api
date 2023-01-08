@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import datetime as dt
 from copy import deepcopy
 
@@ -11,8 +13,6 @@ from auth_api.models.token import (ACCESS_TOKEN_TYPE, REFRESH_TOKEN_TYPE,
 from auth_api.models.user import User
 from auth_api.security import (create_jwt_token, hash_password,
                                verify_decode_access_token)
-
-# Mark test async.
 
 
 @pytest.mark.asyncio
