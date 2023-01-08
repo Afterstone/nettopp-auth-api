@@ -1,5 +1,13 @@
 name: Tests
 
+env:
+  VERBOSE: True
+  AUTH_DB_CONNECTION_STRING: "sqlite:///auth.db"
+  COCKROACHDB_CLUSTER_ID: "test"
+  JWT_SECRET_KEY: "test"
+  HOST: "0.0.0.0"
+  PORT: "8000"
+
 on:
   push:
     branches:
