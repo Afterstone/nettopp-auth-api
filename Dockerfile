@@ -1,12 +1,19 @@
 FROM python:3.10-slim-buster
 
+
 WORKDIR /app
+RUN \
+    apt-get update -y \
+    && apt-get install -y --no-install-recommends \
+        curl=7.64.0-4+deb10u3 \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN \
     adduser --disabled-login nopriv \
-    && chown -R nopriv /app \
+    && mkdir -p /app/src/auth_api/ \
+    && chown -R nopriv /app
     # Make flit install packages only, to cache package installation.
-    && mkdir -p /app/src/auth_api/
+
 
 COPY src/auth_api/__init__.py src/auth_api/__init__.py
 COPY \
@@ -25,6 +32,8 @@ RUN pip install --no-cache-dir .
 ENV PORT=8000
 
 USER nopriv
+ARG COCKROACHDB_CLUSTER_ID
+RUN curl --create-dirs -o ~/.postgresql/root.crt "https://cockroachlabs.cloud/clusters/${COCKROACHDB_CLUSTER_ID}/cert"
 CMD [ \
     "bash", "-c", \
     "python -m auth_api.main" \
