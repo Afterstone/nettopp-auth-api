@@ -38,16 +38,6 @@ def create_jwt_token(
 
 def decode_jwt_token(token: str) -> dict[str, Any]:
     data: dict[str, Any] = jwt.decode(token, JWT_SECRET_KEY, algorithms=[JWT_ALGORITHM])
-
-    # Check the exp.
-    exp_raw = data.get("exp", None)
-    # We have to decode the exp.
-    if exp_raw is None:
-        raise ValueError("There is no exp in the token.")
-    exp: dt.datetime = dt.datetime.fromtimestamp(exp_raw, tz=dt.timezone.utc)
-    if exp < dt.datetime.now(dt.timezone.utc):
-        raise ValueError("The token is expired.")
-
     return data
 
 
@@ -57,4 +47,7 @@ def get_token_hash(token: str) -> str:
 
 def verify_decode_access_token(token: str) -> dict[str, Any]:
     data = decode_jwt_token(token)
+
+    # TODO: Should check JTI here to make sure it's not been used before.
+
     return data
