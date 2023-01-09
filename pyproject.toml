@@ -43,13 +43,13 @@ test = [
 ]
 dev = [
     "nox             ~= 2022.11.21",
-    "pre-commit      ~= 2.20.0",
+    "pre-commit      ~= 2.21.0",
     "nettopp-auth-api[test]",
     "nettopp-auth-api[lint]",
 ]
 
 [tool.pytest.ini_options]
-minversion = "6.0"
+minversion = "7.0"
 addopts = """
     -ra -qq
     --cov
