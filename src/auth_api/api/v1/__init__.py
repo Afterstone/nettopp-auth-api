@@ -3,10 +3,10 @@ from __future__ import annotations
 import datetime as dt
 
 import starlette.status as status
-from fastapi import APIRouter, Depends, Form, HTTPException, Response
+from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from fastapi.security import OAuth2PasswordBearer
 from jose.exceptions import ExpiredSignatureError
-from pydantic import EmailStr
+from pydantic import BaseModel, EmailStr
 from pydantic.error_wrappers import ValidationError
 
 from auth_api.database import Session, get_db
@@ -24,6 +24,21 @@ router = APIRouter()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/login")
 
 
+class RegisterBody(BaseModel):
+    email: str
+    username: str
+    password: str
+
+
+class LoginBody(BaseModel):
+    email: str
+    password: str
+
+
+class RefreshBody(BaseModel):
+    token: str
+
+
 @router.get('/health')
 async def health() -> Response:
     return Response(status_code=status.HTTP_204_NO_CONTENT)
@@ -31,19 +46,16 @@ async def health() -> Response:
 
 @router.post('/register')
 async def register(
+    request: Request,
     db: Session = Depends(get_db),
-    email: str | None = Form(None),
-    username: str | None = Form(None),
-    password: str | None = Form(None),
 ) -> Response:
-    if not (username and password and email):
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Missing username, password or email.")
+    register_body = RegisterBody(**(await request.json()))
 
     try:
         user = User(
-            username=username,
-            email=EmailStr(email),
-            password_hash=hash_password(password),
+            username=register_body.username,
+            email=EmailStr(register_body.email),
+            password_hash=hash_password(register_body.password),
         )
     except ValidationError:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid value provided.")
@@ -58,22 +70,21 @@ async def register(
 
 @router.post('/login')
 async def login(
+    request: Request,
     db: Session = Depends(get_db),
-    email: str | None = Form(None),
-    password: str | None = Form(None),
+
 ) -> TokenPair:
-    if not (email and password):
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Missing email or password.")
+    login_body = LoginBody(**(await request.json()))
 
     try:
-        user = await get_user_by_email(db, email)
+        user = await get_user_by_email(db, login_body.email)
     except UserDoesNotExistError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
 
     if not isinstance(user.password_hash, str):
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal server error.")
 
-    if not verify_password(password, user.password_hash):
+    if not verify_password(login_body.password, user.password_hash):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect password")
 
     if not user.is_active:
@@ -113,11 +124,13 @@ async def login(
 
 @router.post('/refresh')
 async def refresh(
+    request: Request,
     db: Session = Depends(get_db),
-    token: str = Depends(oauth2_scheme)
 ) -> AccessToken:
+    refresh_body = RefreshBody(**(await request.json()))
+
     try:
-        token_data = verify_decode_access_token(token)
+        token_data = verify_decode_access_token(refresh_body.token)
     except ExpiredSignatureError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token expired")
 
