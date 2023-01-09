@@ -31,7 +31,7 @@ lint = [
     "flake8          ~= 6.0.0",
     "flake8-isort    ~= 6.0.0",
     "isort           ~= 5.11.4",
-    "mypy            >= 0.950",
+    "mypy            >= 0.991",
     "types-passlib     ~= 1.7.7.3",
     "types-python-jose ~= 3.3.4",
 ]
