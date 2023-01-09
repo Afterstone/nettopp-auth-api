@@ -33,10 +33,11 @@ def _parse_bool(
 
 
 # Application config
-VERBOSE: bool = _parse_bool(_get_envvar("VERBOSE"))
+RELOAD: bool = _parse_bool(_get_envvar("RELOAD", "false"))
+VERBOSE: bool = _parse_bool(_get_envvar("VERBOSE", "false"))
 
 # Database
-AUTH_DB_CONNECTION_STRING: str = _get_envvar("AUTH_DB_CONNECTION_STRING")
+AUTH_DB_CONNECTION_STRING: str = _get_envvar("AUTH_DB_CONNECTION_STRING", "sqlite:///auth.db")
 
 # JWT
 JWT_SECRET_KEY: str = _get_envvar("JWT_SECRET_KEY")
