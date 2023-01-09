@@ -8,7 +8,7 @@ from typing import Any
 from jose import jwt
 from passlib.context import CryptContext
 
-from .config import JWT_ALGORITHM, JWT_SECRET_KEY
+from .config import JWT_ALGORITHM, JWT_PRIVATE_KEY, JWT_PUBLIC_KEY
 
 PWD_CONTEXT = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -32,12 +32,12 @@ def create_jwt_token(
     to_encode["exp"] = expire
     to_encode["jti"] = str(uuid.uuid4())
     to_encode["token_type"] = token_type
-    token: str = jwt.encode(to_encode, JWT_SECRET_KEY, algorithm=JWT_ALGORITHM)
+    token: str = jwt.encode(to_encode, JWT_PRIVATE_KEY, algorithm=JWT_ALGORITHM)
     return token
 
 
 def decode_jwt_token(token: str) -> dict[str, Any]:
-    data: dict[str, Any] = jwt.decode(token, JWT_SECRET_KEY, algorithms=[JWT_ALGORITHM])
+    data: dict[str, Any] = jwt.decode(token, JWT_PUBLIC_KEY, algorithms=[JWT_ALGORITHM])
     return data
 
 

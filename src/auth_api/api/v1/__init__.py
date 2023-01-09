@@ -72,7 +72,6 @@ async def register(
 async def login(
     request: Request,
     db: Session = Depends(get_db),
-
 ) -> TokenPair:
     login_body = LoginBody(**(await request.json()))
 
@@ -124,13 +123,11 @@ async def login(
 
 @router.post('/refresh')
 async def refresh(
-    request: Request,
+    token: str = Depends(oauth2_scheme),
     db: Session = Depends(get_db),
 ) -> AccessToken:
-    refresh_body = RefreshBody(**(await request.json()))
-
     try:
-        token_data = verify_decode_access_token(refresh_body.token)
+        token_data = verify_decode_access_token(token)
     except ExpiredSignatureError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token expired")
 

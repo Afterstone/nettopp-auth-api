@@ -40,8 +40,9 @@ VERBOSE: bool = _parse_bool(_get_envvar("VERBOSE", "false"))
 AUTH_DB_CONNECTION_STRING: str = _get_envvar("AUTH_DB_CONNECTION_STRING", "sqlite:///auth.db")
 
 # JWT
-JWT_SECRET_KEY: str = _get_envvar("JWT_SECRET_KEY")
-JWT_ALGORITHM: str = "HS256"
+JWT_PRIVATE_KEY: str = _get_envvar("JWT_PRIVATE_KEY").replace('\\n', '\n')
+JWT_PUBLIC_KEY: str = _get_envvar("JWT_PUBLIC_KEY").replace('\\n', '\n')
+JWT_ALGORITHM: str = _get_envvar("JWT_ALGORITHM", "ES512")
 
 # Server
 HOST: str = _get_envvar("HOST", "0.0.0.0")  # nosec B104
