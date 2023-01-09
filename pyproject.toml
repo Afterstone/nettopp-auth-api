@@ -10,7 +10,7 @@ requires-python = ">=3.8"
 classifiers = [ "Private :: Do Not Upload" ]
 dependencies = [
     "alembic[tz]                ~= 1.9.1",
-    "fastapi                    ~= 0.77.0",
+    "fastapi                    ~= 0.88.0",
     "passlib[bcrypt]            ~= 1.7.4",
     "psycopg2-binary            ~= 2.9.5",
     "python-dotenv              ~= 0.21.0",
