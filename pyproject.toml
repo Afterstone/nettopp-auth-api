@@ -10,14 +10,14 @@ requires-python = ">=3.8"
 classifiers = [ "Private :: Do Not Upload" ]
 dependencies = [
     "alembic[tz]                ~= 1.9.1",
-    "fastapi                    ~= 0.77.0",
+    "fastapi                    ~= 0.88.0",
     "passlib[bcrypt]            ~= 1.7.4",
     "psycopg2-binary            ~= 2.9.5",
     "python-dotenv              ~= 0.21.0",
     "python-jose[cryptography]  ~= 3.3.0",
     "python-multipart           ~= 0.0.5",
     "sqlalchemy-cockroachdb     ~= 1.4.4",
-    "uvicorn                    ~= 0.17.0",
+    "uvicorn                    ~= 0.20.0",
 
     # Requirements where the version depends on
     # other packages.
@@ -30,26 +30,26 @@ lint = [
     "bandit[toml]    ~= 1.7.4",
     "flake8          ~= 6.0.0",
     "flake8-isort    ~= 6.0.0",
-    "isort           ~= 5.10.0",
-    "mypy            >= 0.950",
+    "isort           ~= 5.11.4",
+    "mypy            >= 0.991",
     "types-passlib     ~= 1.7.7.3",
     "types-python-jose ~= 3.3.4",
 ]
 test = [
+    "httpx           ~= 0.23.3",
     "pytest          ~= 7.2.0",
     "pytest-cov      ~= 4.0.0",
     "pytest-asyncio  ~= 0.20.3",
-    "requests        ~= 2.28.1 ",
 ]
 dev = [
     "nox             ~= 2022.11.21",
-    "pre-commit      ~= 2.20.0",
+    "pre-commit      ~= 2.21.0",
     "nettopp-auth-api[test]",
     "nettopp-auth-api[lint]",
 ]
 
 [tool.pytest.ini_options]
-minversion = "6.0"
+minversion = "7.0"
 addopts = """
     -ra -qq
     --cov
