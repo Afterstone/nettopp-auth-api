@@ -1,7 +1,9 @@
 ### Manually added ###
 
+/auth.db
 /.vscode
 /thunder-tests
+
 
 ### Auto-generated ###
 
