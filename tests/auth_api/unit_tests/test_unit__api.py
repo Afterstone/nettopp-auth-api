@@ -191,9 +191,7 @@ async def test_refresh_token(
     )
 
     try:
-        response = test_client.post("/api/v1/refresh", json={
-            'token': token,
-        })
+        response = test_client.post("/api/v1/refresh", headers={"authorization": f"Bearer {token}"})
         assert response.status_code == expected_status_code
 
         if str(expected_status_code)[0] == '2':
