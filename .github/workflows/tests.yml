@@ -2,6 +2,8 @@ name: Tests
 
 env:
   JWT_ALGORITHM: "ES512"
+  # NB: The public/private keys are not real. The Python JWT library
+  # just requires a valid key pair to be present.
   JWT_PRIVATE_KEY: "-----BEGIN EC PRIVATE KEY-----\nMIHcAgEBBEIAFMSPdZ8v2ype2E66s8ntgJiK6xmjxRRFQnlpi7kDaFUU15Ty4kqG\nEm6teCS/zfooQBeTr6ZVTgYE7j/cGHoAcAygBwYFK4EEACOhgYkDgYYABAGbeI/9\nrjf9+ap2MyKtbhl7eMGRHzbqLvLn08KDXXZ5J4j+PGErrGPzd6MDWJYVZZXhhbDC\nsWOBZkAmr2EX4Zq3qAB0egScxJZ0slcof6rAY0q5r/se7H9riWo/iopBqxcEKe2q\n7L5HZBApRVHSFeVbVoPwehcWf9OByHo27Z5Ha9RrkQ==\n-----END EC PRIVATE KEY-----\n"
   JWT_PUBLIC_KEY: "-----BEGIN PUBLIC KEY-----\nMIGbMBAGByqGSM49AgEGBSuBBAAjA4GGAAQBm3iP/a43/fmqdjMirW4Ze3jBkR82\n6i7y59PCg112eSeI/jxhK6xj83ejA1iWFWWV4YWwwrFjgWZAJq9hF+Gat6gAdHoE\nnMSWdLJXKH+qwGNKua/7Hux/a4lqP4qKQasXBCntquy+R2QQKUVR0hXlW1aD8HoX\nFn/Tgch6Nu2eR2vUa5E=\n-----END PUBLIC KEY-----\n"
   AUTH_DB_CONNECTION_STRING: "sqlite:///auth.db"
