@@ -5,18 +5,18 @@ requires = ["flit_core >=3.7.1,<4"]
 [project]
 name = "nettopp-auth-api"
 version = "0.1.0"
-description = "An authentication system based on JWT, FastAPI and CockroachDB"
+description = "An authentication system based on JWT and FastAPI"
 requires-python = ">=3.8"
 classifiers = [ "Private :: Do Not Upload" ]
 dependencies = [
     "alembic[tz]                ~= 1.9.1",
     "fastapi                    ~= 0.88.0",
     "passlib[bcrypt]            ~= 1.7.4",
-    "psycopg2-binary            ~= 2.9.5",
+    "psycopg2                   ~= 2.9.5",
     "python-dotenv              ~= 0.21.0",
     "python-jose[cryptography]  ~= 3.3.0",
     "python-multipart           ~= 0.0.5",
-    "sqlalchemy-cockroachdb     ~= 1.4.4",
+    "sqlalchemy                 ~= 1.4.46",
     "uvicorn                    ~= 0.20.0",
 
     # Requirements where the version depends on

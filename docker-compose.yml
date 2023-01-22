@@ -4,8 +4,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        - COCKROACHDB_CLUSTER_ID=${COCKROACHDB_CLUSTER_ID}
     env_file:
       - .env
     ports:

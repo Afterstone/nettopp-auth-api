@@ -8,17 +8,16 @@ The Nettopp Auth API is the backend server for the Nettopp Auth system.
 
 ### Environment variables
 
-| Name                        | Description                                                                               | Default             |
-| --------------------------- | ----------------------------------------------------------------------------------------- | ------------------- |
-| `AUTH_DB_CONNECTION_STRING` | The connection string for the database.                                                   | `sqlite:///auth.db` |
-| `COCKROACHDB_CLUSTER_ID`    | The cluster ID for the CockroachDB cluster. Used by Docker to download CDB's public cert. | `test`              |
-| `HOST`                      | The host to bind to.                                                                      |                     |
-| `JWT_PRIVATE_KEY`           | The private JWT key.                                                                      |                     |
-| `JWT_PUBLIC_KEY`            | The public JWT key.                                                                       |                     |
-| `JWT_ALGORITHM`             | The JWT algorithm to use.                                                                 | `ES512`             |
-| `PORT`                      | The port to bind to.                                                                      |                     |
-| `RELOAD`                    | Whether to reload the server on code changes.                                             | `False`             |
-| `VERBOSE`                   | Whether to print verbose logs.                                                            | `False`             |
+| Name                        | Description                                   | Default             |
+| --------------------------- | --------------------------------------------- | ------------------- |
+| `AUTH_DB_CONNECTION_STRING` | The connection string for the database.       | `sqlite:///auth.db` |
+| `HOST`                      | The host to bind to.                          |                     |
+| `JWT_PRIVATE_KEY`           | The private JWT key.                          |                     |
+| `JWT_PUBLIC_KEY`            | The public JWT key.                           |                     |
+| `JWT_ALGORITHM`             | The JWT algorithm to use.                     | `ES512`             |
+| `PORT`                      | The port to bind to.                          |                     |
+| `RELOAD`                    | Whether to reload the server on code changes. | `False`             |
+| `VERBOSE`                   | Whether to print verbose logs.                | `False`             |
 
 
 ### Key generation
