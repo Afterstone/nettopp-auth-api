@@ -2,18 +2,6 @@ FROM python:3.10-slim-buster
 
 
 WORKDIR /app
-ARG COCKROACHDB_CLUSTER_ID
-RUN \
-    apt-get update -y \
-    && apt-get install -y --no-install-recommends \
-        curl \
-    && curl \
-        --create-dirs \
-        -o /home/nopriv/.postgresql/root.crt \
-        "https://cockroachlabs.cloud/clusters/${COCKROACHDB_CLUSTER_ID}/cert" \
-    && chown nopriv:nopriv -R /home/nopriv/.postgresql/ \
-    && apt-get remove -y curl \
-    && rm -rf /var/lib/apt/lists/*
 
 RUN \
     adduser --disabled-login nopriv \
