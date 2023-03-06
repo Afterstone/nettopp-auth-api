@@ -9,7 +9,7 @@ description = "An authentication system based on JWT, FastAPI and CockroachDB"
 requires-python = ">=3.8"
 classifiers = [ "Private :: Do Not Upload" ]
 dependencies = [
-    "sqlalchemy         ~= 1.4.40",
+    "sqlalchemy         ~= 2.0.5",
     "fastapi            ~= 0.77.0",
     "uvicorn            ~= 0.17.0",
 ]
