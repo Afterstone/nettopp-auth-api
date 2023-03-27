@@ -16,7 +16,7 @@ dependencies = [
 
 [project.optional-dependencies]
 lint = [
-    "autopep8        ~= 1.6.0",
+    "autopep8        ~= 2.0.2",
     "bandit[toml]    ~= 1.7.4",
     "flake8          ~= 4.0.0",
     "isort           ~= 5.10.0",
